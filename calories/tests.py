@@ -20,6 +20,9 @@ class FoodItemViewsTests(TestCase):
         self.assertEqual(response.context["total_calories"], 230)
 
     def test_add_food(self):
+        response = self.client.get(reverse("add_food"))
+        self.assertEqual(response.status_code, 200)
+
         response = self.client.post(
             reverse("add_food"),
             {"name": "Banana", "calories": 105},
@@ -32,6 +35,11 @@ class FoodItemViewsTests(TestCase):
 
     def test_edit_food(self):
         food_item = FoodItem.objects.create(name="Oats", calories=150)
+
+        response = self.client.get(
+            reverse("edit_food", args=[food_item.pk])
+        )
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.post(
             reverse("edit_food", args=[food_item.pk]),
