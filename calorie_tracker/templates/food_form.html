@@ -1,0 +1,85 @@
+{% extends "calorie_tracker/base.html" %}
+
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="mx-auto max-w-xl">
+
+    <div class="rounded-2xl bg-white p-8 shadow-md">
+
+        <h1 class="text-2xl font-bold text-gray-900">
+            {{ title }}
+        </h1>
+
+        <p class="mt-2 text-gray-500">
+            Enter the food item and its calorie count.
+        </p>
+        <form
+            method="post"
+            class="mt-8"
+        >
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+
+                <div class="mb-6 rounded-lg bg-red-50 p-4 text-red-700">
+                    {{ form.non_field_errors }}
+                </div>
+
+            {% endif %}
+            <div class="mb-6">
+
+                <label
+                    for="{{ form.name.id_for_label }}"
+                    class="mb-2 block font-semibold text-gray-700"
+                >
+                    Food Name
+                </label>
+
+                {{ form.name }}
+                {% if form.name.errors %}
+
+                    <p class="mt-2 text-sm text-red-600">
+                        {{ form.name.errors.0 }}
+                    </p>
+
+                {% endif %}
+
+            </div>
+            <div class="mb-8">
+                <label
+                    for="{{ form.calories.id_for_label }}"
+                    class="mb-2 block font-semibold text-gray-700"
+                >
+                    Calories
+                </label>
+
+                {{ form.calories }}
+                {% if form.calories.errors %}
+
+                    <p class="mt-2 text-sm text-red-600">
+                        {{ form.calories.errors.0 }}
+                    </p>
+
+                {% endif %}
+
+            </div>
+            <div class="flex gap-3">
+
+                <button
+                    type="submit"
+                    class="flex-1 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition hover:bg-indigo-700"
+                >
+                    {{ button_text }}
+                </button>
+                <a
+                    href="{% url 'home' %}"
+                    class="rounded-lg bg-gray-100 px-6 py-3 font-semibold text-gray-700 hover:bg-gray-200"
+                >
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
