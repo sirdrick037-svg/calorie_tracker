@@ -1,0 +1,58 @@
+{% extends "calorie_tracker/base.html" %}
+
+
+{% block title %} Delete Food {% endblock %}
+{% block content %}
+<div class="mx-auto max-w-xl">
+    <div class="rounded-2xl bg-white p-8 text-center shadow-md">
+        <div
+            class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-100"
+        >
+            <span class="text-2xl text-red-600">
+                !
+            </span>
+        </div>
+
+
+        <h1 class="mt-6 text-2xl font-bold text-gray-900">
+            Delete Food Item?
+        </h1>
+
+
+        <p class="mt-3 text-gray-600">
+
+            Are you sure you want to remove
+
+            <strong>
+                {{ food_item.name }}
+            </strong>
+
+            ({{ food_item.calories }} kcal)?
+
+        </p>
+        <form
+            method="post"
+            class="mt-8 flex justify-center gap-3"
+        >
+            {% csrf_token %}
+            <a
+                href="{% url 'home' %}"
+                class="rounded-lg bg-gray-100 px-6 py-3 font-semibold text-gray-700 hover:bg-gray-200"
+            >
+                Cancel
+            </a>
+            <button
+                type="submit"
+                class="rounded-lg bg-red-600 px-6 py-3 font-semibold text-white hover:bg-red-700"
+            >
+                Delete
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+{% endblock %}
