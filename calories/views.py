@@ -30,7 +30,7 @@ def home(request):
 
     return render(
         request,
-        "calorie_tracker/home.html",
+        "home.html",
         context
     )
 
@@ -58,7 +58,7 @@ def add_food(request):
 
     return render(
         request,
-        "calorie_tracker/food_form.html",
+        "food_form.html",
         {
             "form": form,
             "title": "Add Food",
@@ -99,7 +99,7 @@ def edit_food(request, food_id):
 
     return render(
         request,
-        "calorie_tracker/food_form.html",
+        "food_form.html",
         {
             "form": form,
             "title": "Edit Food",
@@ -128,7 +128,7 @@ def delete_food(request, food_id):
 
     return render(
         request,
-        "calorie_tracker/food_confirm_delete.html",
+        "food_confirm_delete.html",
         {
             "food_item": food_item
         }

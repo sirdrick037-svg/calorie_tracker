@@ -1,85 +1,71 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
+{% block title %}Today's Calories{% endblock %}
 
-    <meta charset="UTF-8">
+{% block content %}
+<section class="mx-auto max-w-3xl">
+    <div class="mb-8 rounded-2xl bg-white p-8 shadow-md">
+        <p class="text-sm font-semibold uppercase tracking-wide text-indigo-600">
+            {{ today|date:"F j, Y" }}
+        </p>
+        <h1 class="mt-2 text-3xl font-bold text-gray-900">
+            Today's calorie total
+        </h1>
+        <p class="mt-4 text-4xl font-bold text-indigo-600">
+            {{ total_calories }} <span class="text-lg font-medium">kcal</span>
+        </p>
+    </div>
 
-    <metaname="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>
-        {% block title %}
-            Calorie Counter
-        {% endblock %}
-    </title>
-
-    <link
-        rel="stylesheet" href="{% static 'css/tailwind.css' %}">
-
-</head>
-<body class="min-h-screen bg-gray-100 text-gray-800">
-
-    <nav class="bg-indigo-600 shadow-lg">
-
-        <div class="mx-auto max-w-5xl px-4">
-
-            <div class="flex h-16 items-center justify-between">
-
-                <a href="{% url 'home' %}" class="text-xl font-bold text-white">
-                    Calorie Counter
-                </a>
-
-
-                <a
-                    href="{% url 'add_food' %}"
-                    class="rounded-lg bg-white px-4 py-2 font-semibold text-indigo-600 transition hover:bg-gray-100"
-                >
-                    + Add Food
-                </a>
-
-            </div>
-
+    <div class="rounded-2xl bg-white p-8 shadow-md">
+        <div class="mb-6 flex items-center justify-between">
+            <h2 class="text-xl font-bold text-gray-900">Today's food</h2>
+            {% if food_items %}
+                <form method="post" action="{% url 'reset_today' %}">
+                    {% csrf_token %}
+                    <button
+                        type="submit"
+                        class="font-semibold text-red-600 hover:text-red-700"
+                    >
+                        Reset today
+                    </button>
+                </form>
+            {% endif %}
         </div>
 
-    </nav>
-
-
-    <main class="mx-auto max-w-5xl px-4 py-8">
-
-        {% if messages %}
-
-            {% for message in messages %}
-
-                <div
-                    class="mb-6 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-700"
-                >
-                    {{ message }}
-                </div>
-
-            {% endfor %}
-
+        {% if food_items %}
+            <ul class="divide-y divide-gray-200">
+                {% for food_item in food_items %}
+                    <li class="flex items-center justify-between gap-4 py-4">
+                        <div>
+                            <p class="font-semibold text-gray-900">
+                                {{ food_item.name }}
+                            </p>
+                            <p class="text-sm text-gray-500">
+                                {{ food_item.calories }} kcal
+                            </p>
+                        </div>
+                        <div class="flex gap-4 text-sm font-semibold">
+                            <a
+                                href="{% url 'edit_food' food_item.id %}"
+                                class="text-indigo-600 hover:text-indigo-700"
+                            >
+                                Edit
+                            </a>
+                            <a
+                                href="{% url 'delete_food' food_item.id %}"
+                                class="text-red-600 hover:text-red-700"
+                            >
+                                Delete
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="rounded-lg bg-gray-50 p-6 text-center text-gray-600">
+                No food added today. Use “Add Food” to get started.
+            </p>
         {% endif %}
-
-
-        {% block content %}
-
-        {% endblock %}
-
-    </main>
-
-
-    <footer class="mt-12 border-t bg-white">
-
-        <div
-            class="mx-auto max-w-5xl px-4 py-6 text-center text-sm text-gray-500"
-        >
-            Calorie Counter
-        </div>
-
-    </footer>
-
-
-</body>
-
-</html>
+    </div>
+</section>
+{% endblock %}
